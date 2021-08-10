@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SamuraiApp.Data;
 
 namespace SamuraiApp.Data.Migrations
 {
     [DbContext(typeof(SamuraiContext))]
-    partial class SamuraiContextModelSnapshot : ModelSnapshot
+    [Migration("20210810141131_samurai-battles-payload-date")]
+    partial class samuraibattlespayloaddate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -52,27 +54,6 @@ namespace SamuraiApp.Data.Migrations
                     b.HasIndex("SamuraiId");
 
                     b.ToTable("BattleSamurai");
-                });
-
-            modelBuilder.Entity("SamuraiApp.Domain.Horse", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("SamuraiId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("SamuraiId")
-                        .IsUnique();
-
-                    b.ToTable("Horse");
                 });
 
             modelBuilder.Entity("SamuraiApp.Domain.Quote", b =>
@@ -125,15 +106,6 @@ namespace SamuraiApp.Data.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("SamuraiApp.Domain.Horse", b =>
-                {
-                    b.HasOne("SamuraiApp.Domain.Samurai", null)
-                        .WithOne("Horse")
-                        .HasForeignKey("SamuraiApp.Domain.Horse", "SamuraiId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("SamuraiApp.Domain.Quote", b =>
                 {
                     b.HasOne("SamuraiApp.Domain.Samurai", "Samurai")
@@ -147,8 +119,6 @@ namespace SamuraiApp.Data.Migrations
 
             modelBuilder.Entity("SamuraiApp.Domain.Samurai", b =>
                 {
-                    b.Navigation("Horse");
-
                     b.Navigation("Quotes");
                 });
 #pragma warning restore 612, 618
