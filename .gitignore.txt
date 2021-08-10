@@ -1,6 +1,10 @@
 [Bb]in/
 [Oo]bj/
 
+bin
+obj
+packages
+
 *.sln.cache
 *.suo
 *.csproj.user
