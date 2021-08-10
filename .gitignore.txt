@@ -1,6 +1,6 @@
 [Bb]in/
 [Oo]bj/
-
+*.obj
 bin
 obj
 packages
