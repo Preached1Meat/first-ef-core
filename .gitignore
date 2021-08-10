@@ -22,3 +22,6 @@ SamuraiApp/SamuraiApp.Domain/bin/Debug/net5.0/SamuraiApp.Domain.deps.json
 SamuraiApp/SamuraiApp.Domain/bin/Debug/net5.0/SamuraiApp.Domain.pdb
 SamuraiApp/SamuraiApp.Domain/obj
 SamuraiApp/SamuraiApp.Ui/obj
+SamuraiApp/SamuraiApp.Ui/bin
+SamuraiApp/SamuraiApp.Data/bin
+SamuraiApp/SamuraiApp.Data/obj
