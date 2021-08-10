@@ -1,0 +1,12 @@
+C:\Users\PreachedMeat\Desktop\Noest - Tutorials\EF\getting-started-entity-framework-core\Solution\SamuraiApp\SamuraiApp.Domain\bin\Debug\net5.0\SamuraiApp.Domain.deps.json
+C:\Users\PreachedMeat\Desktop\Noest - Tutorials\EF\getting-started-entity-framework-core\Solution\SamuraiApp\SamuraiApp.Domain\bin\Debug\net5.0\SamuraiApp.Domain.dll
+C:\Users\PreachedMeat\Desktop\Noest - Tutorials\EF\getting-started-entity-framework-core\Solution\SamuraiApp\SamuraiApp.Domain\bin\Debug\net5.0\ref\SamuraiApp.Domain.dll
+C:\Users\PreachedMeat\Desktop\Noest - Tutorials\EF\getting-started-entity-framework-core\Solution\SamuraiApp\SamuraiApp.Domain\bin\Debug\net5.0\SamuraiApp.Domain.pdb
+C:\Users\PreachedMeat\Desktop\Noest - Tutorials\EF\getting-started-entity-framework-core\Solution\SamuraiApp\SamuraiApp.Domain\obj\Debug\net5.0\SamuraiApp.Domain.csproj.AssemblyReference.cache
+C:\Users\PreachedMeat\Desktop\Noest - Tutorials\EF\getting-started-entity-framework-core\Solution\SamuraiApp\SamuraiApp.Domain\obj\Debug\net5.0\SamuraiApp.Domain.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\PreachedMeat\Desktop\Noest - Tutorials\EF\getting-started-entity-framework-core\Solution\SamuraiApp\SamuraiApp.Domain\obj\Debug\net5.0\SamuraiApp.Domain.AssemblyInfoInputs.cache
+C:\Users\PreachedMeat\Desktop\Noest - Tutorials\EF\getting-started-entity-framework-core\Solution\SamuraiApp\SamuraiApp.Domain\obj\Debug\net5.0\SamuraiApp.Domain.AssemblyInfo.cs
+C:\Users\PreachedMeat\Desktop\Noest - Tutorials\EF\getting-started-entity-framework-core\Solution\SamuraiApp\SamuraiApp.Domain\obj\Debug\net5.0\SamuraiApp.Domain.csproj.CoreCompileInputs.cache
+C:\Users\PreachedMeat\Desktop\Noest - Tutorials\EF\getting-started-entity-framework-core\Solution\SamuraiApp\SamuraiApp.Domain\obj\Debug\net5.0\SamuraiApp.Domain.dll
+C:\Users\PreachedMeat\Desktop\Noest - Tutorials\EF\getting-started-entity-framework-core\Solution\SamuraiApp\SamuraiApp.Domain\obj\Debug\net5.0\ref\SamuraiApp.Domain.dll
+C:\Users\PreachedMeat\Desktop\Noest - Tutorials\EF\getting-started-entity-framework-core\Solution\SamuraiApp\SamuraiApp.Domain\obj\Debug\net5.0\SamuraiApp.Domain.pdb
