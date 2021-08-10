@@ -12,7 +12,6 @@ namespace SamuraiApp.Data
 	{
 		public DbSet<Samurai> Samurais { get; set; }
 		public DbSet<Quote> Quotes { get; set; }
-
 		public DbSet<Battle> Battles { get; set; }
 
 		protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -21,6 +20,21 @@ namespace SamuraiApp.Data
 			// For Demo purposes
 			optionsBuilder.UseSqlServer("Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=SamuraiAppData");
 			base.OnConfiguring(optionsBuilder);
+		}
+
+		protected override void OnModelCreating(ModelBuilder modelBuilder)
+		{
+
+			modelBuilder.Entity<Samurai>()
+				.HasMany(s => s.Battles)
+				.WithMany(b => b.Samurais)
+				.UsingEntity<BattleSamurai>(
+				 bs => bs.HasOne<Battle>().WithMany(),
+				 bs => bs.HasOne<Samurai>().WithMany())
+				.Property(bs => bs.DateJoined) // additional payload
+				.HasDefaultValueSql("getdate()");
+
+			base.OnModelCreating(modelBuilder);
 		}
 	}
 }
