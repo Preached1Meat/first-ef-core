@@ -1,0 +1,18 @@
+[Bb]in/
+[Oo]bj/
+
+*.sln.cache
+*.suo
+*.csproj.user
+*.user
+*.resharper
+*.orig
+*.bak
+*.xap
+*.rej
+
+# Visual Studio
+.vs/
+
+# vs code
+.vscode/
