@@ -13,7 +13,7 @@ namespace SamuraiApp.Ui
 			_context.Database.EnsureCreated();
 			GetSamurais("Before Add");
 			AddSamurai();
-			GetSamurais("After Add")
+			GetSamurais("After Add");
 			Console.WriteLine("Press Any Key");
 			Console.ReadLine();
 		}
