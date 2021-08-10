@@ -10,6 +10,7 @@ namespace SamuraiApp.Ui
 		private static SamuraiContext _context = new SamuraiContext();
 		static void Main(string[] args)
 		{
+			// For Testing
 			_context.Database.EnsureCreated();
 			GetSamurais("Before Add");
 			AddSamurai();
