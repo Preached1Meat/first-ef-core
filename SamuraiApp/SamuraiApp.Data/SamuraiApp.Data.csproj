@@ -13,7 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\SamuraiApp.Domain\SamuraiApp.Domain.csproj" />
+    <ProjectReference Include="..\SamuraiApp.Domain\SamuraiApp.Domain.csproj" /> 
   </ItemGroup>
 
 </Project>
