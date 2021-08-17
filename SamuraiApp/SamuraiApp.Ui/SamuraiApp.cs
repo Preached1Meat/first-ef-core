@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using SamuraiApp.Data;
 using SamuraiApp.Domain;
 using System;
@@ -45,7 +46,9 @@ namespace SamuraiApp.Ui
 
 			//AddQuoteToSamuraiWhileTracked("stijn", "nog een quote");
 
-			AddQuoteToSamuraiWhileNotTracked("stijn", "untracked quote using attach", true );
+			//AddQuoteToSamuraiWhileNotTracked("stijn", "untracked quote using attach", true);
+
+			EagerLoadingWithQuotes();
 
 			Console.WriteLine("Press Any Key");
 			Console.ReadLine();
@@ -137,9 +140,37 @@ namespace SamuraiApp.Ui
 				newContext.SaveChanges();
 			}
 		}
+
+		private void EagerLoadingWithQuotes()
+		{
+			//// default include, executes a single query
+			//var samuraiWithQuotes = _context.Samurais
+			//	.Include(s => s.Quotes)
+			//	.ToList();
+
+			//// Splitquery - can improve performance
+			//var splitQuery = _context.Samurais
+			//		.AsSplitQuery()
+			//		.Include(s => s.Quotes)
+			//		.ToList();
+
+			//// filter on Include
+			//var filteredInclude = _context.Samurais
+			//	.Include(s => s.Quotes.Where(q => q.Text.Contains("hello")))
+			//	.ToList();
+
+			// get one samure , include the first quote
+			var singleSamuraiQuotes = _context.Samurais
+				.Where(s => s.Name.Contains("stijn"))
+				.Include(s => s.Quotes.FirstOrDefault())
+
+		}
+
 		public void HandleError(Exception ex)
 		{
 			logger.LogError($"Application Encountered error: { ex.Message}");
 		}
+
+
 	}
 }
