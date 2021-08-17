@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using SamuraiApp.Data;
 using SamuraiApp.Domain;
 using System;
@@ -38,7 +39,9 @@ namespace SamuraiApp.Ui
 
 		private static void ConfigureServices(IServiceCollection services)
 		{
-			services.AddLogging().AddTransient<SamuraiApp>();
+			services.AddLogging(configure => configure.AddConsole())
+				.AddTransient<SamuraiApp>();
+
 			services.AddDbContext<SamuraiContext>();
 		}
 	}

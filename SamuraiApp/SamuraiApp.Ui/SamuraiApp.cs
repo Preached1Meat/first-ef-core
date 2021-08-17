@@ -23,10 +23,7 @@ namespace SamuraiApp.Ui
 		public void Run()
 		{
 			_context.Database.EnsureCreated();
-			GetAllSamurais("Before Add");
-
-			throw new ApplicationException("crit error");
-
+			//GetAllSamurais("Before Add");
 			//AddSamurais("Shimada", "Okamato", "Kikuoichi", "Hayashida");
 			//var result = GetSamuraiByName("Shimada");
 
@@ -48,7 +45,7 @@ namespace SamuraiApp.Ui
 
 			//AddQuoteToSamuraiWhileTracked("stijn", "nog een quote");
 
-			//AddQuoteToSamuraiWhileNotTracked("stijn", "untracked quote");
+			AddQuoteToSamuraiWhileNotTracked("stijn", "untracked quote using attach", true );
 
 			Console.WriteLine("Press Any Key");
 			Console.ReadLine();
@@ -119,9 +116,9 @@ namespace SamuraiApp.Ui
 			_context.SaveChanges();
 		}
 
-		private void AddQuoteToSamuraiWhileNotTracked(string samuraiName, string quote)
+		private void AddQuoteToSamuraiWhileNotTracked(string samuraiName, string quote, bool useAttach = false)
 		{
-			var samurai = _context.Samurais.Find(samuraiName);
+			var samurai = GetSamuraiByName(samuraiName);
 			samurai.Quotes.Add(new Quote
 			{
 				Text = quote
@@ -129,12 +126,17 @@ namespace SamuraiApp.Ui
 
 			using (var newContext = new SamuraiContext())
 			{
-				newContext.Samurais.Update(samurai);
+				if (useAttach)
+				{
+					newContext.Samurais.Attach(samurai);
+				}
+				else
+				{
+					newContext.Samurais.Update(samurai);
+				}
 				newContext.SaveChanges();
 			}
 		}
-
-
 		public void HandleError(Exception ex)
 		{
 			logger.LogError($"Application Encountered error: { ex.Message}");
