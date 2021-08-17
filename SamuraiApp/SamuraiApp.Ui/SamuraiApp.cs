@@ -49,7 +49,10 @@ namespace SamuraiApp.Ui
 			//AddQuoteToSamuraiWhileNotTracked("stijn", "untracked quote using attach", true);
 
 			//EagerLoadingWithQuotes();
-			ProjectSomeProperties();
+
+			//ProjectSomeProperties();
+
+			LazyLoadQuotes();
 
 			Console.WriteLine("Press Any Key");
 			Console.ReadLine();
@@ -195,8 +198,36 @@ namespace SamuraiApp.Ui
 			var modified = _context.ChangeTracker.Entries()
 				.Where(e => e.State == EntityState.Modified)
 				.FirstOrDefault();
-			
-			logger.Log(LogLevel.Information,$"modified enity is a {modified.Metadata.Name}");
+
+			logger.Log(LogLevel.Information, $"modified enity is a {modified.Metadata.Name}");
+		}
+		public void ExplicitLoadQuotes()
+		{
+			// make sure a horse is in DB
+			_context.Set<Horse>().Add(new Horse { SamuraiId = 12, Name = "mr.horse" });
+			_context.SaveChanges();
+
+			_context.ChangeTracker.Clear();
+
+			var samurai = _context.Samurais.Find(12);
+			_context.Entry(samurai).Collection(s => s.Quotes).Load();
+			_context.Entry(samurai).Reference(s => s.Horse).Load();
+		}
+
+		public void LazyLoadQuotes()
+		{
+			var samurai = _context.Samurais.Find(12);
+
+			logger.Log(LogLevel.Information, $"LazyLoadQuotes: no LL enabled and no explicit loading count is : {samurai.Quotes.Count}");
+
+			_context.Entry(samurai).Collection(s => s.Quotes).Load();
+
+			logger.Log(LogLevel.Information, $"LazyLoadQuotes: no LL enabled and with explicit loading count is : {samurai.Quotes.Count}");
+
+			// Lazy loading with proxies
+			// must be configured on context 
+			// EF Core will then enable lazy loading for any navigation property that can be overridden
+			// that is, it must be virtual and on a class that can be inherited from
 		}
 
 		public void HandleError(Exception ex)
