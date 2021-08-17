@@ -1,10 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using SamuraiApp.Domain;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SamuraiApp.Data
 {
@@ -18,12 +15,16 @@ namespace SamuraiApp.Data
 		{
 			// Don't hardcode into context
 			// For Demo purposes
-			optionsBuilder.UseSqlServer("Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=SamuraiAppData");
+			optionsBuilder
+				.UseSqlServer("Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=SamuraiAppData")
+				.LogTo(Console.WriteLine, new[] { DbLoggerCategory.Database.Command.Name }, LogLevel.Information)
+				.EnableSensitiveDataLogging(sensitiveDataLoggingEnabled: true);
+
 			base.OnConfiguring(optionsBuilder);
 		}
 
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
-		{
+		{  
 
 			modelBuilder.Entity<Samurai>()
 				.HasMany(s => s.Battles)
