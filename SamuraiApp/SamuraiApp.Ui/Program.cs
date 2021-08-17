@@ -9,6 +9,7 @@ namespace SamuraiApp.Ui
 	class Program
 	{
 		private static SamuraiContext _context = new SamuraiContext();
+		private static SamuraiContextNoTracking samuraiContextNoTracking = new SamuraiContextNoTracking();
 		static void Main(string[] args)
 		{
 			_context.Database.EnsureCreated();
@@ -20,7 +21,6 @@ namespace SamuraiApp.Ui
 			if (result != null)
 			{
 				Console.WriteLine($"Found a Samurai with name {result.Name}");
-
 				AppendSamuraiName(result, "San");
 
 			}
