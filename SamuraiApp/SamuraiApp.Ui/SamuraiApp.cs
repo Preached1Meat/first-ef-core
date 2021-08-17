@@ -48,7 +48,8 @@ namespace SamuraiApp.Ui
 
 			//AddQuoteToSamuraiWhileNotTracked("stijn", "untracked quote using attach", true);
 
-			EagerLoadingWithQuotes();
+			//EagerLoadingWithQuotes();
+			ProjectSomeProperties();
 
 			Console.WriteLine("Press Any Key");
 			Console.ReadLine();
@@ -143,27 +144,59 @@ namespace SamuraiApp.Ui
 
 		private void EagerLoadingWithQuotes()
 		{
-			//// default include, executes a single query
-			//var samuraiWithQuotes = _context.Samurais
-			//	.Include(s => s.Quotes)
-			//	.ToList();
+			// default include, executes a single query
+			var samuraiWithQuotes = _context.Samurais
+				.Include(s => s.Quotes)
+				.ToList();
 
-			//// Splitquery - can improve performance
-			//var splitQuery = _context.Samurais
-			//		.AsSplitQuery()
-			//		.Include(s => s.Quotes)
-			//		.ToList();
+			// Splitquery - can improve performance
+			var splitQuery = _context.Samurais
+					.AsSplitQuery()
+					.Include(s => s.Quotes)
+					.ToList();
 
-			//// filter on Include
-			//var filteredInclude = _context.Samurais
-			//	.Include(s => s.Quotes.Where(q => q.Text.Contains("hello")))
-			//	.ToList();
+			// filter on Include
+			var filteredInclude = _context.Samurais
+				.Include(s => s.Quotes.Where(q => q.Text.Contains("hello")))
+				.ToList();
 
 			// get one samure , include the first quote
 			var singleSamuraiQuotes = _context.Samurais
 				.Where(s => s.Name.Contains("stijn"))
-				.Include(s => s.Quotes.FirstOrDefault())
+				.Include(s => s.Quotes.FirstOrDefault());
 
+		}
+
+		private void ProjectSomeProperties()
+		{
+			// anonymous objects are not tracked by the context
+			var somePropsWithQuotes = _context.Samurais
+				.Select(s => new { s.Id, s.Name, NumberOfQuotes = s.Quotes.Count })
+				.ToList();
+
+			// anonymous objects containing a property which is a registered entity 
+			// will be tracked by the context
+			var samuraiAndQuotes = _context.Samurais
+				.Select(s => new
+				{
+					Samurai = s,
+					HelloQuotes = s.Quotes
+					.Where(q => q.Text.Contains("hello"))
+				})
+				.ToList();
+
+			// list of new anonymous objects with a samurai entity as property
+			var firstSamurai = samuraiAndQuotes[0].Samurai.Name += " The Happiest ";
+
+
+			// context recognizes the samurai entity of the anomymous object
+			// returned by the projection query
+			// and tracks when changes are made
+			var modified = _context.ChangeTracker.Entries()
+				.Where(e => e.State == EntityState.Modified)
+				.FirstOrDefault();
+			
+			logger.Log(LogLevel.Information,$"modified enity is a {modified.Metadata.Name}");
 		}
 
 		public void HandleError(Exception ex)
