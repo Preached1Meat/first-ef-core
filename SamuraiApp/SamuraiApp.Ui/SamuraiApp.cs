@@ -64,7 +64,9 @@ namespace SamuraiApp.Ui
 
 			//ReturnBattleWithSamurais();
 
-			AddAllSamuraisToBattlesFail();
+			//AddAllSamuraisToBattlesFail();
+
+			AddAllSamuraisToBattlesEager();
 
 			Console.WriteLine("Press Any Key");
 			Console.ReadLine();
@@ -280,7 +282,7 @@ namespace SamuraiApp.Ui
 			var quote = samuraisWithquotesLoaded.Quotes[0];
 			quote.Text += "Did you here that agains";
 
-		
+
 			using (var newContext = new SamuraiContext())
 			{
 				//// new context, quotes are not yet tracked
@@ -291,7 +293,55 @@ namespace SamuraiApp.Ui
 				// without updating all other quotes 
 				newContext.Entry(quote).State = EntityState.Modified;
 				newContext.SaveChanges();
-			} 
+			}
+		}
+
+		private void AddNewSamuraiToExistingBattle()
+		{
+			var battle = _context.Battles.FirstOrDefault();
+			battle.Samurais.Add(new Samurai { Name = " Rookie Samurai" });
+			_context.SaveChanges();
+		}
+
+		public void ReturnBattleWithSamurais()
+		{
+			var battle = _context.Battles.Include(b => b.Samurais).FirstOrDefault();
+		}
+
+		public void ReturnBattlesWithSamurais()
+		{
+			var battles = _context.Battles.Include(b => b.Samurais).ToList();
+		}
+
+		private void AddAllSamuraisToBattlesFail()
+		{
+
+			var allBattles = _context.Battles.ToList();
+			var allSamurais = _context.Samurais.ToList();
+
+			// trying to add all samurai to all battles
+			// if duplicate key exists (composite key) this will throw PK constraint violation
+			foreach (var battle in allBattles)
+			{
+				battle.Samurais.AddRange(allSamurais);
+			}
+			_context.SaveChanges();
+		}
+
+		private void AddAllSamuraisToBattlesEager()
+		{
+
+			// by including either one of the relations, ef core will figure out the duplicates
+			// on the join table
+			// this has performance implications
+			var allBattles = _context.Battles.ToList();
+			var allSamurais = _context.Samurais.Include(b => b.Battles).ToList();
+
+			foreach (var battle in allBattles)
+			{
+				battle.Samurais.AddRange(allSamurais);
+			}
+			_context.SaveChanges();
 		}
 
 		private void AddNewSamuraiToExistingBattle()
@@ -328,7 +378,7 @@ namespace SamuraiApp.Ui
 
 		public void HandleError(Exception ex)
 		{
-			logger.LogError($"Application Encountered error: { ex.Message}");
+			logger.LogError(ex.InnerException, $"Application Encountered error: { ex.Message}");
 		}
 
 
