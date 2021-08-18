@@ -24,16 +24,17 @@ namespace SamuraiApp.Data
 		}
 
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
-		{  
+		{
 
-			//modelBuilder.Entity<Samurai>()
-			//	.HasMany(s => s.Battles)
-			//	.WithMany(b => b.Samurais)
-			//	.UsingEntity<BattleSamurai>(
-			//	 bs => bs.HasOne<Battle>().WithMany(),
-			//	 bs => bs.HasOne<Samurai>().WithMany())
-			//	.Property(bs => bs.DateJoined) // additional payload
-			//	.HasDefaultValueSql("getdate()");
+			modelBuilder.Entity<Samurai>()
+				.HasMany(s => s.Battles)
+				.WithMany(b => b.Samurais)
+				.UsingEntity<BattleSamurai>(
+				 bs => bs.HasOne<Battle>().WithMany(),
+				 bs => bs.HasOne<Samurai>().WithMany())
+				.ToTable("BattleSamurai")// set table name explictly
+				.Property(bs => bs.DateJoined) // additional payload
+				.HasDefaultValueSql("getdate()");
 
 			base.OnModelCreating(modelBuilder);
 		}
