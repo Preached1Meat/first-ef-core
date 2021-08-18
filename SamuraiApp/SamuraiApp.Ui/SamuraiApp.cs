@@ -66,7 +66,11 @@ namespace SamuraiApp.Ui
 
 			//AddAllSamuraisToBattlesFail();
 
-			AddAllSamuraisToBattlesEager();
+			//AddAllSamuraisToBattlesEager();
+
+			//RemoveSamuraiFromABattle();
+
+			WillNotRemoveSamuraiFromBattle();
 
 			Console.WriteLine("Press Any Key");
 			Console.ReadLine();
@@ -271,8 +275,6 @@ namespace SamuraiApp.Ui
 
 		}
 
-
-
 		private void ModifyingRelatedDataWhenNotTracked()
 		{
 			var samuraisWithquotesLoaded = _context.Samurais
@@ -344,35 +346,28 @@ namespace SamuraiApp.Ui
 			_context.SaveChanges();
 		}
 
-		private void AddNewSamuraiToExistingBattle()
+
+		private void RemoveSamuraiFromABattle()
 		{
-			var battle = _context.Battles.FirstOrDefault();
-			battle.Samurais.Add(new Samurai { Name = " Rookie Samurai" });
+			//query makes context track samurais for given battle
+			var battleWithSamurai = _context.Battles
+				.Include(b => b.Samurais.Where(s => s.Id == 12))
+				.Single(s => s.BattleId == 1);
+
+			var samurai = battleWithSamurai.Samurais[0];
+			battleWithSamurai.Samurais.Remove(samurai);
 			_context.SaveChanges();
 		}
 
-		public void ReturnBattleWithSamurais()
+		private void WillNotRemoveSamuraiFromBattle()
 		{
-			var battle = _context.Battles.Include(b => b.Samurais).FirstOrDefault();
-		}
+			// the relation is not tracked by the context;
+			var battle = _context.Battles.Find(1);
+			var samurai = _context.Samurais.Find(12);
 
-		public void ReturnBattlesWithSamurais()
-		{
-			var battles = _context.Battles.Include(b => b.Samurais).ToList();
-		}
-
-		private void AddAllSamuraisToBattlesFail()
-		{
-			var allBattles = _context.Battles.ToList();
-			var allSamurais = _context.Samurais.ToList();
-
-
-			// trying to add all samurai to all battles
-			// if duplicate key exists (composite key) this will throw PK constraint violation
-			foreach (var battle in allBattles)
-			{
-				battle.Samurais.AddRange(allSamurais);
-			}
+			// here battle has no samurais
+			// so context will not remove
+			battle.Samurais.Remove(samurai);
 			_context.SaveChanges();
 		}
 
