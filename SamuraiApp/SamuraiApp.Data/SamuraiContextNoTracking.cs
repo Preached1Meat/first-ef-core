@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 
 namespace SamuraiApp.Data
 {
-	public class SamuraiContextNoTracking : SamuraiContext
-	{
-		public SamuraiContextNoTracking()
-		{
-			base.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
-		}
-	}
+	//public class SamuraiContextNoTracking : SamuraiContext
+	//{
+	//	public SamuraiContextNoTracking()
+	//	{
+	//		base.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
+	//	}
+	//}
 }

@@ -58,7 +58,13 @@ namespace SamuraiApp.Ui
 
 			//ModifyingRelatedDataWhenTracked();
 
-			ModifyingRelatedDataWhenNotTracked();
+			//ModifyingRelatedDataWhenNotTracked();
+
+			//AddNewSamuraiToExistingBattle();
+
+			//ReturnBattleWithSamurais();
+
+			AddAllSamuraisToBattlesFail();
 
 			Console.WriteLine("Press Any Key");
 			Console.ReadLine();
@@ -286,6 +292,38 @@ namespace SamuraiApp.Ui
 				newContext.Entry(quote).State = EntityState.Modified;
 				newContext.SaveChanges();
 			} 
+		}
+
+		private void AddNewSamuraiToExistingBattle()
+		{
+			var battle = _context.Battles.FirstOrDefault();
+			battle.Samurais.Add(new Samurai { Name = " Rookie Samurai" });
+			_context.SaveChanges();
+		}
+
+		public void ReturnBattleWithSamurais()
+		{
+			var battle = _context.Battles.Include(b => b.Samurais).FirstOrDefault();
+		}
+
+		public void ReturnBattlesWithSamurais()
+		{
+			var battles = _context.Battles.Include(b => b.Samurais).ToList();
+		}
+
+		private void AddAllSamuraisToBattlesFail()
+		{
+			var allBattles = _context.Battles.ToList();
+			var allSamurais = _context.Samurais.ToList();
+
+
+			// trying to add all samurai to all battles
+			// if duplicate key exists (composite key) this will throw PK constraint violation
+			foreach (var battle in allBattles)
+			{
+				battle.Samurais.AddRange(allSamurais);
+			}
+			_context.SaveChanges();
 		}
 
 		public void HandleError(Exception ex)

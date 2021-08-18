@@ -12,7 +12,7 @@ namespace SamuraiApp.Ui
 	{
 		// not used anymore, due to using the di container to inject into the main app
 		private static readonly SamuraiContext _context = new();
-		private static readonly SamuraiContextNoTracking _samuraiContextNoTracking = new();
+		//private static readonly SamuraiContextNoTracking _samuraiContextNoTracking = new();
 		static void Main(string[] args)
 		{
 
