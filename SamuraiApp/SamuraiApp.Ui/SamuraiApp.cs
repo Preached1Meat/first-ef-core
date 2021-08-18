@@ -52,7 +52,9 @@ namespace SamuraiApp.Ui
 
 			//ProjectSomeProperties();
 
-			LazyLoadQuotes();
+			//LazyLoadQuotes();
+
+			FilteringWithRelatedData();
 
 			Console.WriteLine("Press Any Key");
 			Console.ReadLine();
@@ -201,6 +203,7 @@ namespace SamuraiApp.Ui
 
 			logger.Log(LogLevel.Information, $"modified enity is a {modified.Metadata.Name}");
 		}
+
 		public void ExplicitLoadQuotes()
 		{
 			// make sure a horse is in DB
@@ -230,10 +233,27 @@ namespace SamuraiApp.Ui
 			// that is, it must be virtual and on a class that can be inherited from
 		}
 
+		private void FilteringWithRelatedData()
+		{
+			// subquery on quotes, quotes not actually loaded
+			var samurais = _context.Samurais.Where(s =>
+				s.Quotes.Any(q => q.Text.Contains("hello")))
+				.ToList();
+
+			// eager loaded
+			var samuraisWithquotesLoaded = _context.Samurais
+				.Include(s => s.Quotes)
+				.Where(s => s.Quotes.Any(q => q.Text.Contains("hello")))
+				.ToList();
+
+		}
+
 		public void HandleError(Exception ex)
 		{
 			logger.LogError($"Application Encountered error: { ex.Message}");
 		}
+
+
 
 
 	}
