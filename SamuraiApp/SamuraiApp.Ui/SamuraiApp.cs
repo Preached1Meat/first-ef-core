@@ -70,7 +70,9 @@ namespace SamuraiApp.Ui
 
 			//RemoveSamuraiFromABattle();
 
-			WillNotRemoveSamuraiFromBattle();
+			//WillNotRemoveSamuraiFromBattle();
+
+			RemoveSamuraiFromABattleExplicit();
 
 			Console.WriteLine("Press Any Key");
 			Console.ReadLine();
@@ -368,6 +370,22 @@ namespace SamuraiApp.Ui
 			// here battle has no samurais
 			// so context will not remove
 			battle.Samurais.Remove(samurai);
+			_context.SaveChanges();
+		}
+
+		private void RemoveSamuraiFromABattleExplicit()
+		{
+			// set return a DBSet, even if no DBset property in our context  
+			var battleSamurai = _context.Set<BattleSamurai>()
+				.SingleOrDefault(bs => bs.BattleId == 1 && bs.SamuraiId == 12);
+
+			if (battleSamurai == null)
+			{
+				return;
+			}
+
+			//_context.Remove(battleSamurai);
+			battleSamurai.DateJoined = DateTime.Now;
 			_context.SaveChanges();
 		}
 
