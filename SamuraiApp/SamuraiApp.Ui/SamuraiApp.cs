@@ -54,7 +54,11 @@ namespace SamuraiApp.Ui
 
 			//LazyLoadQuotes();
 
-			FilteringWithRelatedData();
+			//FilteringWithRelatedData();
+
+			//ModifyingRelatedDataWhenTracked();
+
+			ModifyingRelatedDataWhenNotTracked();
 
 			Console.WriteLine("Press Any Key");
 			Console.ReadLine();
@@ -246,6 +250,42 @@ namespace SamuraiApp.Ui
 				.Where(s => s.Quotes.Any(q => q.Text.Contains("hello")))
 				.ToList();
 
+		}
+
+		private void ModifyingRelatedDataWhenTracked()
+		{
+			var samuraisWithquotesLoaded = _context.Samurais
+				.Include(s => s.Quotes)
+				.FirstOrDefault(s => s.Id == 1);
+
+			samuraisWithquotesLoaded.Quotes[0].Text = "Did you here that";
+			_context.SaveChanges();
+
+		}
+
+
+
+		private void ModifyingRelatedDataWhenNotTracked()
+		{
+			var samuraisWithquotesLoaded = _context.Samurais
+				.Include(s => s.Quotes)
+				.FirstOrDefault(s => s.Id == 12);
+
+			var quote = samuraisWithquotesLoaded.Quotes[0];
+			quote.Text += "Did you here that agains";
+
+		
+			using (var newContext = new SamuraiContext())
+			{
+				//// new context, quotes are not yet tracked
+				//// updating single quote will update all quotes beloning to samurai id from quote enitity
+				//newContext.Quotes.Update(quote);
+
+				// use entry + state to change single quote
+				// without updating all other quotes 
+				newContext.Entry(quote).State = EntityState.Modified;
+				newContext.SaveChanges();
+			} 
 		}
 
 		public void HandleError(Exception ex)
