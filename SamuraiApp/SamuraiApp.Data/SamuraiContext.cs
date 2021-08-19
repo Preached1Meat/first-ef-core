@@ -10,6 +10,7 @@ namespace SamuraiApp.Data
 		public DbSet<Samurai> Samurais { get; set; }
 		public DbSet<Quote> Quotes { get; set; }
 		public DbSet<Battle> Battles { get; set; }
+		public DbSet<SamuraiBattleStat> SamuraiBattleStats { get; set; }
 
 		protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 		{
@@ -40,6 +41,10 @@ namespace SamuraiApp.Data
 			// horse does not have a dbSet property in the context
 			// so EF does not apply the multiples naming convention
 			modelBuilder.Entity<Horse>().ToTable("Horses");
+
+
+			// keyless entity, EF will never track entities marked with HasNoKey
+			modelBuilder.Entity<SamuraiBattleStat>().HasNoKey().ToView("SamuraiBattleStats");
 
 			base.OnModelCreating(modelBuilder);
 		}
