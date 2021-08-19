@@ -82,7 +82,9 @@ namespace SamuraiApp.Ui
 
 			//GetSamuraiWithHorse();
 
-			GetHorsesWithSamurai();
+			//GetHorsesWithSamurai();
+
+			QuerySamuraiBattleStats();
 
 			Console.WriteLine("Press Any Key");
 			Console.ReadLine();
@@ -453,6 +455,20 @@ namespace SamuraiApp.Ui
 				.Include(s => s.Horse)
 				.FirstOrDefault(s => s.Horse.Id  == 3);
 		}
+
+		#region Keyless Entities -> View
+		private void QuerySamuraiBattleStats()
+		{
+			// change tracker will have 0 entries
+			var stats = _context.SamuraiBattleStats.ToList();
+
+			var query = stats.FirstOrDefault(b => b.Name == "stijn");
+
+			//// wont work : keyless! 
+			//var find = _context.SamuraiBattleStats.Find(2);
+
+		}
+		#endregion
 
 		public void HandleError(Exception ex)
 		{
