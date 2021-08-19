@@ -470,6 +470,21 @@ namespace SamuraiApp.Ui
 		}
 		#endregion
 
+		#region Raw SQL
+		private void QueryUsingRawSql()
+		{
+			// result from SQL must return data for all props of the entity
+			var samurais = _context.Samurais.FromSqlRaw("Select * from samurais").ToList();
+		}
+
+		private void QueryUsingRawSqlWithInterpolation()
+		{
+			var name = "stijn";
+			// interpolations will be parameterized by EF
+			var samurais = _context.Samurais.FromSqlInterpolated($"Select * from samurais where name= {name}").ToList();
+		}
+		#endregion
+
 		public void HandleError(Exception ex)
 		{
 			logger.LogError(ex.InnerException, $"Application Encountered error: { ex.Message}");
