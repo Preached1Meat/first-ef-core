@@ -90,7 +90,9 @@ namespace SamuraiApp.Ui
 
 			//QueryUsingRawSqlWithInterpolation();
 
-			QueryUsingRawSqlSP();
+			//QueryUsingRawSqlSP();
+
+			ExecuteSomeRawSql();
 
 			Console.WriteLine("Press Any Key");
 			Console.ReadLine();
@@ -497,6 +499,16 @@ namespace SamuraiApp.Ui
 			var name = "hello";
 			var samurais = _context.Samurais
 				.FromSqlRaw("EXEC dbo.SamuraisWhoSaidAWord {0}", name).ToList();
+		}
+		#endregion
+
+		#region Non-query raw sql
+		private void ExecuteSomeRawSql()
+		{
+			var samuraiID = 2;
+			// executing on database object of context cannot materialize results
+			var affected = _context.Database
+				.ExecuteSqlInterpolated($"EXEC DeleteQuotesFoSamurai {samuraiID}");
 		}
 		#endregion
 
