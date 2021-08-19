@@ -24,7 +24,7 @@ namespace SamuraiApp.Data
 		}
 
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
-		{  
+		{
 
 			modelBuilder.Entity<Samurai>()
 				.HasMany(s => s.Battles)
@@ -32,8 +32,14 @@ namespace SamuraiApp.Data
 				.UsingEntity<BattleSamurai>(
 				 bs => bs.HasOne<Battle>().WithMany(),
 				 bs => bs.HasOne<Samurai>().WithMany())
+				.ToTable("BattleSamurai")// set table name explictly
 				.Property(bs => bs.DateJoined) // additional payload
 				.HasDefaultValueSql("getdate()");
+
+
+			// horse does not have a dbSet property in the context
+			// so EF does not apply the multiples naming convention
+			modelBuilder.Entity<Horse>().ToTable("Horses");
 
 			base.OnModelCreating(modelBuilder);
 		}

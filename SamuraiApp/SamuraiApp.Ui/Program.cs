@@ -1,4 +1,6 @@
-﻿using SamuraiApp.Data;
+﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using SamuraiApp.Data;
 using SamuraiApp.Domain;
 using System;
 using System.Collections.Generic;
@@ -8,67 +10,40 @@ namespace SamuraiApp.Ui
 {
 	class Program
 	{
-		private static SamuraiContext _context = new SamuraiContext();
-		private static SamuraiContextNoTracking samuraiContextNoTracking = new SamuraiContextNoTracking();
+		// not used anymore, due to using the di container to inject into the main app
+		private static readonly SamuraiContext _context = new();
+		//private static readonly SamuraiContextNoTracking _samuraiContextNoTracking = new();
 		static void Main(string[] args)
 		{
-			_context.Database.EnsureCreated();
-			//GetAllSamurais("Before Add");
 
-			//AddSamurais("Shimada", "Okamato", "Kikuoichi", "Hayashida");
-			var result = GetSamuraiByName("Shimada");
+			var services = new ServiceCollection();
+			ConfigureServices(services);
 
-			if (result != null)
-			{
-				Console.WriteLine($"Found a Samurai with name {result.Name}");
-				AppendSamuraiName(result, "San");
+			ServiceProvider serviceProvider = services.BuildServiceProvider();
+			SamuraiApp app = serviceProvider.GetService<SamuraiApp>();
 
+			try
+			{	
+				app.Run();
 			}
-
-			GetAllSamurais("After Add");
-
-			Console.WriteLine("Press Any Key");
-			Console.ReadLine();
-		}
-		static void AddSamurais(params string[] names)
-		{
-			var samurais = names
-				.Select(n => new Samurai { Name = n });
-
-			// EF detects Enitity object
-			_context.AddRange(samurais);
-
-			// Effectively the same as above
-			//_context.Samurais.AddRange(samurais);
-
-			_context.SaveChanges();
-		}
-
-		static void AddSamurai(string name)
-		{
-			var samurai = new Samurai { Name = name };
-			_context.Samurais.Add(samurai);
-			_context.SaveChanges();
-		}
-
-		static Samurai GetSamuraiByName(string name) =>
-			_context.Samurais.FirstOrDefault(s => s.Name == name);
-
-		static void AppendSamuraiName(Samurai samurai, string appendage)
-		{
-			samurai.Name += appendage;
-			_context.SaveChanges();
-		}
-
-		static void GetAllSamurais(string text)
-		{
-
-			var samurais = _context.Samurais.ToList();
-			Console.WriteLine($"{text}: Samurai count is {samurais.Count}");
-			foreach (var samurai in samurais)
+			catch (Exception ex )
 			{
-				Console.WriteLine(samurai.Name);
+
+				app.HandleError(ex);
 			}
+			finally
+			{
+				// do nothing
+			}
+			
+		}
+
+		private static void ConfigureServices(IServiceCollection services)
+		{
+			services.AddLogging(configure => configure.AddConsole())
+				.AddTransient<SamuraiApp>();
+
+			services.AddDbContext<SamuraiContext>();
 		}
 	}
 }
