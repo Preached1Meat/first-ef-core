@@ -46,7 +46,7 @@ namespace SamuraiApp.Ui
 
 			//AddQuoteToSamuraiWhileTracked("stijn", "nog een quote");
 
-			//AddQuoteToSamuraiWhileNotTracked("stijn", "untracked quote using attach", true);
+			AddQuoteToSamuraiWhileNotTracked("stijn", "untracked quote using attach", true);
 
 			//EagerLoadingWithQuotes();
 
@@ -171,7 +171,7 @@ namespace SamuraiApp.Ui
 				Text = quote
 			});
 
-			using (var newContext = new SamuraiContext())
+			using (var newContext = new SamuraiContext(_context.DbContextOptions))
 			{
 				if (useAttach)
 				{
@@ -306,7 +306,7 @@ namespace SamuraiApp.Ui
 			var quote = samuraisWithquotesLoaded.Quotes[0];
 			quote.Text += "Did you here that agains";
 
-			using (var newContext = new SamuraiContext())
+			using (var newContext = new SamuraiContext(_context.DbContextOptions))
 			{
 				//// new context, quotes are not yet tracked
 				//// updating single quote will update all quotes beloning to samurai id from quote enitity

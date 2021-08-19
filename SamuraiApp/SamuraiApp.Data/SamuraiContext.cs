@@ -10,10 +10,12 @@ namespace SamuraiApp.Data
 		public DbSet<Battle> Battles { get; set; }
 		public DbSet<SamuraiBattleStat> SamuraiBattleStats { get; set; }
 
+		public DbContextOptions<SamuraiContext>DbContextOptions { get; }
+
 		public SamuraiContext(DbContextOptions<SamuraiContext> options)
 			: base(options)
 		{
-
+			DbContextOptions = options; 
 		}
 
 		// moved to configure services of console app

@@ -29,3 +29,5 @@ SamuraiApp/SamuraiApp.Data/SamuraiContext.dgml
 SamuraiApp/.vs/SamuraiApp/DesignTimeBuild/.dtbcache.v2
 SamuraiApp/SamuraiAPI/bin
 SamuraiApp/SamuraiAPI/obj
+SamuraiApp/SamuraiTest/bin
+SamuraiApp/SamuraiTest/obj
