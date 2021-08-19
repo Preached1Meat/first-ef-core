@@ -78,7 +78,11 @@ namespace SamuraiApp.Ui
 
 			//AddNewHorseToSamraiUsingId();
 
-			ReplaceAHorse();
+			//ReplaceAHorse();
+
+			//GetSamuraiWithHorse();
+
+			GetHorsesWithSamurai();
 
 			Console.WriteLine("Press Any Key");
 			Console.ReadLine();
@@ -429,6 +433,25 @@ namespace SamuraiApp.Ui
 			horse.SamuraiId = 2;
 			_context.SaveChanges();
 
+		}
+
+		
+		
+		public void GetSamuraiWithHorse()
+		{
+			var samurais = _context.Samurais.Include(s => s.Horse).ToList();
+		}
+
+	
+		public void GetHorsesWithSamurai()
+		{
+			// horse has no navigation property to samurai 
+			// just the samuraiID
+			var horse = _context.Set<Horse>().Find(3);
+
+			var horseWithSamurai = _context.Samurais
+				.Include(s => s.Horse)
+				.FirstOrDefault(s => s.Horse.Id  == 3);
 		}
 
 		public void HandleError(Exception ex)

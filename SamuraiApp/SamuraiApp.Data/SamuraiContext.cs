@@ -36,6 +36,11 @@ namespace SamuraiApp.Data
 				.Property(bs => bs.DateJoined) // additional payload
 				.HasDefaultValueSql("getdate()");
 
+
+			// horse does not have a dbSet property in the context
+			// so EF does not apply the multiples naming convention
+			modelBuilder.Entity<Horse>().ToTable("Horses");
+
 			base.OnModelCreating(modelBuilder);
 		}
 	}
