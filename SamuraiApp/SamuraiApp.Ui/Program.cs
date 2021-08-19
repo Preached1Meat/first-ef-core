@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using SamuraiApp.Data;
 using SamuraiApp.Domain;
@@ -11,7 +12,7 @@ namespace SamuraiApp.Ui
 	class Program
 	{
 		// not used anymore, due to using the di container to inject into the main app
-		private static readonly SamuraiContext _context = new();
+		//private static readonly SamuraiContext _context = new();
 		//private static readonly SamuraiContextNoTracking _samuraiContextNoTracking = new();
 		static void Main(string[] args)
 		{
@@ -23,10 +24,10 @@ namespace SamuraiApp.Ui
 			SamuraiApp app = serviceProvider.GetService<SamuraiApp>();
 
 			try
-			{	
+			{
 				app.Run();
 			}
-			catch (Exception ex )
+			catch (Exception ex)
 			{
 
 				app.HandleError(ex);
@@ -35,7 +36,7 @@ namespace SamuraiApp.Ui
 			{
 				// do nothing
 			}
-			
+
 		}
 
 		private static void ConfigureServices(IServiceCollection services)
@@ -43,7 +44,11 @@ namespace SamuraiApp.Ui
 			services.AddLogging(configure => configure.AddConsole())
 				.AddTransient<SamuraiApp>();
 
-			services.AddDbContext<SamuraiContext>();
+			services.AddDbContext<SamuraiContext>(options =>
+			options.UseSqlServer("Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=SamuraiAppData")
+				.LogTo(Console.WriteLine, new[] { DbLoggerCategory.Database.Command.Name }, LogLevel.Information)
+				.EnableSensitiveDataLogging(sensitiveDataLoggingEnabled: true)
+			);
 		}
 	}
 }

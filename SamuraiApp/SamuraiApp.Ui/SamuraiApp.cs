@@ -306,7 +306,6 @@ namespace SamuraiApp.Ui
 			var quote = samuraisWithquotesLoaded.Quotes[0];
 			quote.Text += "Did you here that agains";
 
-
 			using (var newContext = new SamuraiContext())
 			{
 				//// new context, quotes are not yet tracked

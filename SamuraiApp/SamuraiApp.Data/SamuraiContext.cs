@@ -1,7 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
 using SamuraiApp.Domain;
-using System;
 
 namespace SamuraiApp.Data
 {
@@ -12,17 +10,26 @@ namespace SamuraiApp.Data
 		public DbSet<Battle> Battles { get; set; }
 		public DbSet<SamuraiBattleStat> SamuraiBattleStats { get; set; }
 
-		protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+		public SamuraiContext(DbContextOptions<SamuraiContext> options)
+			: base(options)
 		{
-			// Don't hardcode into context
-			// For Demo purposes
-			optionsBuilder
-				.UseSqlServer("Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=SamuraiAppData")
-				.LogTo(Console.WriteLine, new[] { DbLoggerCategory.Database.Command.Name }, LogLevel.Information)
-				.EnableSensitiveDataLogging(sensitiveDataLoggingEnabled: true);
 
-			base.OnConfiguring(optionsBuilder);
 		}
+
+		// moved to configure services of console app
+		// api has different configuration in startup class
+
+		//protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+		//{
+		//	// Don't hardcode into context
+		//	// For Demo purposes
+		//	optionsBuilder
+		//		.UseSqlServer("Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=SamuraiAppData")
+		//		.LogTo(Console.WriteLine, new[] { DbLoggerCategory.Database.Command.Name }, LogLevel.Information)
+		//		.EnableSensitiveDataLogging(sensitiveDataLoggingEnabled: true);
+
+		//	base.OnConfiguring(optionsBuilder);
+		//}
 
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
