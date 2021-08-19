@@ -72,7 +72,13 @@ namespace SamuraiApp.Ui
 
 			//WillNotRemoveSamuraiFromBattle();
 
-			RemoveSamuraiFromABattleExplicit();
+			//RemoveSamuraiFromABattleExplicit();
+
+			//AddnewSamuraiWithHorse();
+
+			//AddNewHorseToSamraiUsingId();
+
+			ReplaceAHorse();
 
 			Console.WriteLine("Press Any Key");
 			Console.ReadLine();
@@ -387,6 +393,42 @@ namespace SamuraiApp.Ui
 			//_context.Remove(battleSamurai);
 			battleSamurai.DateJoined = DateTime.Now;
 			_context.SaveChanges();
+		}
+
+		private void AddnewSamuraiWithHorse()
+		{
+			var samurai = new Samurai { Name = "Jina Ujichika" };
+			samurai.Horse = new Horse { Name = "Silver" };
+			_context.Add(samurai);
+			_context.SaveChanges();
+		}
+
+		private void AddNewHorseToSamraiUsingId()
+		{
+			var horse = new Horse { Name = "Silver", SamuraiId = 2 };
+			_context.Add(horse);
+			_context.SaveChanges();
+		}
+
+		private void ReplaceAHorse()
+		{
+			var samurai = _context.Samurais.Include(s => s.Horse)
+				.FirstOrDefault(s => s.Horse != null);
+
+			// replacing the horse, EF will delete the record in the DB first
+			// constraints don't allow the horse to exist without a 
+			samurai.Horse = new Horse { Name = "Newer Horse" };
+			_context.SaveChanges();
+
+
+			// here EF will just do an insert, when changing the owner of the horse
+			// who already has a horse, this will result in duplicate record due 
+			// to the unique index constraint
+			var horse = _context.Set<Horse>()
+				.FirstOrDefault(h => h.Name == "Newer Horse");
+			horse.SamuraiId = 2;
+			_context.SaveChanges();
+
 		}
 
 		public void HandleError(Exception ex)
