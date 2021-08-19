@@ -84,7 +84,13 @@ namespace SamuraiApp.Ui
 
 			//GetHorsesWithSamurai();
 
-			QuerySamuraiBattleStats();
+			//QuerySamuraiBattleStats();
+
+			//QueryUsingRawSql();
+
+			//QueryUsingRawSqlWithInterpolation();
+
+			QueryUsingRawSqlSP();
 
 			Console.WriteLine("Press Any Key");
 			Console.ReadLine();
@@ -482,6 +488,15 @@ namespace SamuraiApp.Ui
 			var name = "stijn";
 			// interpolations will be parameterized by EF
 			var samurais = _context.Samurais.FromSqlInterpolated($"Select * from samurais where name= {name}").ToList();
+		}
+		#endregion
+
+		#region running stored procedures
+		private void QueryUsingRawSqlSP()
+		{
+			var name = "hello";
+			var samurais = _context.Samurais
+				.FromSqlRaw("EXEC dbo.SamuraisWhoSaidAWord {0}", name).ToList();
 		}
 		#endregion
 
